@@ -103,8 +103,6 @@ int main()
 		LED2=0;
 		LED3=0;
 		LED4=0;
-		
-			//probni2
 	}
 	
 }
