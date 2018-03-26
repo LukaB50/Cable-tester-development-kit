@@ -103,11 +103,7 @@ int main()
 		LED2=0;
 		LED3=0;
 		LED4=0;
-			ms_delay(1000);
-		LED1=0;
-		LED2=0;
-		LED3=0;
-		LED4=0;
+		
 	}
 	
 }
