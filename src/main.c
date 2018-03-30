@@ -1,6 +1,7 @@
 #include "LPC43xx.h"
 #include "timers.h"
 #include "config_pin.h"
+#include <stdbool.h>
 
 #define MAXRED 4
 #define MAXSTUPAC	16
@@ -30,7 +31,7 @@ void GPIO0_IRQHandler(void){					//naziv prekida pise u startup.s
 	return;
 }
 
-void read_inputs(int aktivni_pin, int *p){
+void read_inputs(int aktivni_pin, bool *p){
 	int i;
 	i=0;
 	
@@ -56,11 +57,10 @@ int main()
 {
 	int i,j;
 	
-	
-	int ispravan_pinout[MAXRED][MAXSTUPAC]={0};
-	int *ispravan;
-	int ocitani_pinout[MAXRED][MAXSTUPAC]={0};
-	int *ocitani;
+	bool ispravan_pinout[MAXRED][MAXSTUPAC]={false};
+	bool *ispravan;
+	bool ocitani_pinout[MAXRED][MAXSTUPAC]={false};
+	bool *ocitani;
 	
 	i=j=0;
 	ispravan=&ispravan_pinout[0][0];
@@ -80,20 +80,20 @@ int main()
 	
 	//nadji ispravni pinout, postavlja samo izlazne pinove u 1 ili 0
 	for(i=0;i<MAXRED;i++){
-		LPC_GPIO_PORT->B[1*32+(i+0)]=1;
+		LPC_GPIO_PORT->B[1*32+(i+0)]=true;
 		read_inputs(i,ispravan);
-		LPC_GPIO_PORT->B[1*32+(i+0)]=0;
+		LPC_GPIO_PORT->B[1*32+(i+0)]=false;
 	}
 	
 	while(1){
 		for(i=0;i<MAXRED;i++)								//resetiraj matricu ocitanja
 			for(j=0;j<MAXSTUPAC;j++)
-					ocitani_pinout[i][j]=0;
+					ocitani_pinout[i][j]=false;
 		
 		for(i=0;i<MAXRED;i++){							//ocitaj nova stanja, mora ici do MAXRED=4 jer moze postaviti pinove samo koji su konfigurirani kao izlazni
-			LPC_GPIO_PORT->B[1*32+(i+0)]=1;
+			LPC_GPIO_PORT->B[1*32+(i+0)]=true;
 			read_inputs(i,ocitani);
-			LPC_GPIO_PORT->B[1*32+(i+0)]=0;
+			LPC_GPIO_PORT->B[1*32+(i+0)]=false;
 		}
 		
 		for(i=0;i<MAXRED;i++)
