@@ -1,10 +1,11 @@
 #include "LPC43xx.h"
 #include "timers.h"
 #include "config_pin.h"
+#include <stdbool.h>
 
 #define MAXRED 4
-#define MAXSTUPAC	4
-#define MAXPINS 4
+#define MAXSTUPAC	16
+#define MAXPINS 16
 
 #define LED1 		LPC_GPIO_PORT->B[5*32+17]
 #define LED2 		LPC_GPIO_PORT->B[4*32+15]
@@ -30,12 +31,12 @@ void GPIO0_IRQHandler(void){					//naziv prekida pise u startup.s
 	return;
 }
 
-void read_inputs(int aktivni_pin, int *p){
+void read_inputs(int aktivni_pin, bool *p){
 	int i;
 	i=0;
 	
-	for(i=0;i<4;i++)
-		*(p+aktivni_pin*4+i)=LPC_GPIO_PORT->B[2*32+i+12];		//citaj input od gpio2,12 nadalje, Pretp: ako su svi pinovi u istom portu2
+	for(i=0;i<MAXPINS;i++)
+		*(p+aktivni_pin*MAXPINS+i)=LPC_GPIO_PORT->B[2*32+i];		//citaj input od gpio2,12 nadalje, Pretp: ako su svi pinovi u istom portu2
 	return;
 }
 
@@ -45,19 +46,21 @@ void greska (int pin){
 		case 2: LED2=1; break;
 		case 3: LED3=1; break;
 		case 4: LED4=1; break;
+		
+		default: break;
 	}
 }
 
 // MAIN: Test 4pina u istom portu, prvo ocitanje je ispravno, ostala se usporedjuju s njim, pale se ledice kad postoji razlika
+//				pale se poznata 4 pina koja su definirani kao izlazni, a provjerava se 16pinova u portu2
 int main()
 {
 	int i,j;
 	
-	
-	int ispravan_pinout[MAXRED][MAXSTUPAC]={0};
-	int *ispravan;
-	int ocitani_pinout[MAXRED][MAXSTUPAC]={0};
-	int *ocitani;
+	bool ispravan_pinout[MAXRED][MAXSTUPAC]={false};
+	bool *ispravan;
+	bool ocitani_pinout[MAXRED][MAXSTUPAC]={false};
+	bool *ocitani;
 	
 	i=j=0;
 	ispravan=&ispravan_pinout[0][0];
@@ -75,27 +78,27 @@ int main()
 //	NVIC_EnableIRQ(PIN_INT0_IRQn);
 	
 	
-	//nadji ispravni pinout
-	for(i=0;i<MAXPINS;i++){
-		LPC_GPIO_PORT->B[1*32+(i+0)]=1;
+	//nadji ispravni pinout, postavlja samo izlazne pinove u 1 ili 0
+	for(i=0;i<MAXRED;i++){
+		LPC_GPIO_PORT->B[1*32+(i+0)]=true;
 		read_inputs(i,ispravan);
-		LPC_GPIO_PORT->B[1*32+(i+0)]=0;
+		LPC_GPIO_PORT->B[1*32+(i+0)]=false;
 	}
 	
 	while(1){
 		for(i=0;i<MAXRED;i++)								//resetiraj matricu ocitanja
 			for(j=0;j<MAXSTUPAC;j++)
-					ocitani_pinout[i][j]=0;
+					ocitani_pinout[i][j]=false;
 		
-		for(i=0;i<MAXPINS;i++){							//ocitaj nova stanja
-			LPC_GPIO_PORT->B[1*32+(i+0)]=1;
+		for(i=0;i<MAXRED;i++){							//ocitaj nova stanja, mora ici do MAXRED=4 jer moze postaviti pinove samo koji su konfigurirani kao izlazni
+			LPC_GPIO_PORT->B[1*32+(i+0)]=true;
 			read_inputs(i,ocitani);
-			LPC_GPIO_PORT->B[1*32+(i+0)]=0;
+			LPC_GPIO_PORT->B[1*32+(i+0)]=false;
 		}
 		
 		for(i=0;i<MAXRED;i++)
 			for(j=0;j<MAXSTUPAC;j++){
-				if(*(ispravan+i*4+j) != *(ocitani+i*4+j))		//usporedi dvije matrice
+				if(*(ispravan+i*MAXPINS+j) != *(ocitani+i*MAXPINS+j))		//usporedi dvije matrice
 					greska(i);																//upali LEDicu na pinu koji je krivo spojen
 			}
 		ms_delay(1000);
@@ -103,8 +106,6 @@ int main()
 		LED2=0;
 		LED3=0;
 		LED4=0;
-		
-			//probni2
 	}
 	
 }
