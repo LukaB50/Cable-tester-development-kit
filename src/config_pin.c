@@ -20,6 +20,18 @@ void config_pin(void){
 	LPC_SCU->SFSP7_7  |= (0x0)<<0 /*MODE*/ | (0x0)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x0)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO3[15]	LED4 
 	
 	//IN
+	LPC_SCU->SFSP4_0  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[0]
+	LPC_SCU->SFSP4_1  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[1]
+	LPC_SCU->SFSP4_2  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[2]
+	LPC_SCU->SFSP4_3  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[3]
+	LPC_SCU->SFSP4_4  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[4]
+	LPC_SCU->SFSP4_5  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[5]
+	LPC_SCU->SFSP4_6  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[6]
+	LPC_SCU->SFSP5_7  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[7]
+	LPC_SCU->SFSP6_12 |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[8]
+	LPC_SCU->SFSP5_0  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[9]
+	LPC_SCU->SFSP5_1  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[10]
+	LPC_SCU->SFSP5_2  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[11]
 	LPC_SCU->SFSP5_3  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[12]  
 	LPC_SCU->SFSP5_4  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[13]  
 	LPC_SCU->SFSP5_5  |= (0x0)<<0 /*MODE*/ | (0x1)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	// GPIO2[14]  
