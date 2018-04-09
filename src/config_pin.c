@@ -58,4 +58,9 @@ void config_pin(void){
 	LPC_GPIO_PORT->DIR[1] |= 1<<1 ;
 	LPC_GPIO_PORT->DIR[1] |= 1<<2 ;
 	LPC_GPIO_PORT->DIR[1] |= 1<<3 ;
+	
+	//UART
+	LPC_SCU->SFSPC_13  |= (0x2)<<0 /*MODE*/ | (0x0)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x0)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	//UART1_Tx
+	LPC_SCU->SFSPC_14  |= (0x2)<<0 /*MODE*/ | (0x0)<<3 /*EPD*/ | (0x1)<<4 /*EPUN*/ | (0x1)<<5 /*EHS*/ | (0x1)<<6 /*EZI*/ | (0x1)<<7 /*ZIF*/; 	//UART1_Rx
+	
 }

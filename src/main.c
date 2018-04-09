@@ -51,6 +51,27 @@ void greska (int pin){
 	}
 }
 
+//UART
+void uart_init(void){
+	
+	LPC_UART1->FCR |= 0x07;		// rx & tx buffer reset
+	LPC_UART1->LCR |= 0x83;		//8bit character, 1 stop bit, DLAB enabled
+	LPC_UART1->FDR |= 0x10;		//Set Multiple=1 & Divisor=0
+	LPC_UART1->DLL &= 0x0;		//set DLL to zero
+	LPC_UART1->DLL |= 0x30;		//DLL=48
+	LPC_UART1->DLM |= 0x5;		//DLM=5
+	LPC_UART1->LCR &= ~(1<<7);	//clear DLAB
+	
+	//prepare NVIC for uart interupts
+	
+	//enable uart interrupts
+	
+}
+
+void uart_sendChar(char ch){
+	while(!(LPC_UART1->LSR & 0x20));
+		LPC_UART1->THR=ch;
+}
 // MAIN: Test 4pina u istom portu, prvo ocitanje je ispravno, ostala se usporedjuju s njim, pale se ledice kad postoji razlika
 //				pale se poznata 4 pina koja su definirani kao izlazni, a provjerava se 16pinova u portu2
 int main()
@@ -68,6 +89,7 @@ int main()
 	
 	config_pin();
 	timers_init();
+	uart_init();
 	
 	// interrupt
 //	LPC_SCU->PINTSEL0 |= (0x3)<<0 | (0x6)<<5;	//Gpio6[3] je odabran za interrupt0
@@ -86,26 +108,13 @@ int main()
 	}
 	
 	while(1){
-		for(i=0;i<MAXRED;i++)								//resetiraj matricu ocitanja
-			for(j=0;j<MAXSTUPAC;j++)
-					ocitani_pinout[i][j]=false;
 		
-		for(i=0;i<MAXRED;i++){							//ocitaj nova stanja, mora ici do MAXRED=4 jer moze postaviti pinove samo koji su konfigurirani kao izlazni
-			LPC_GPIO_PORT->B[1*32+(i+0)]=true;
-			read_inputs(i,ocitani);
-			LPC_GPIO_PORT->B[1*32+(i+0)]=false;
-		}
+		uart_sendChar('a');
+		ms_delay(500);
+		uart_sendChar('b');
+		ms_delay(500);
+		uart_sendChar('c');
+		ms_delay(500);
 		
-		for(i=0;i<MAXRED;i++)
-			for(j=0;j<MAXSTUPAC;j++){
-				if(*(ispravan+i*MAXPINS+j) != *(ocitani+i*MAXPINS+j))		//usporedi dvije matrice
-					greska(i);																//upali LEDicu na pinu koji je krivo spojen
-			}
-		ms_delay(1000);
-		LED1=0;
-		LED2=0;
-		LED3=0;
-		LED4=0;
 	}
-	
 }
